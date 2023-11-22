@@ -67,7 +67,7 @@ build() {
 	--disable-manpages \
 	--disable-podpages \
 	--disable-txtpages \
-	--disable-network \
+	--enable-network \
 	--disable-xlib \
 	--disable-cuda-llvm \
 	--enable-demuxer=ac3,ass,dts,dtshd,dvbsub,dvbtxt,h264,matroska,mpegts \
