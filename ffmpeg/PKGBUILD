@@ -1,0 +1,83 @@
+pkgname=ffmpeg
+pkgver=6.1
+pkgrel=1
+pkgdesc="Complete solution to record, convert and stream audio and video"
+arch=(x86_64)
+url="https://ffmpeg.org/"
+license=(GPL3)
+depends=(
+  alsa-lib zimg
+)
+makedepends=(
+  clang
+  yasm
+  git
+)
+_tag=3cdfac27d3ea06f8719faed48b4ae2e75e94a463
+source=(
+git+https://git.ffmpeg.org/ffmpeg.git?signed#tag=${_tag}
+#'git+https://git.ffmpeg.org/ffmpeg.git'
+)
+sha256sums=('SKIP')
+validpgpkeys=(DD1EC9E8DE085C629B3E1846B18E8928B3948D64) # Michael Niedermayer <michael@niedermayer.cc>
+
+#prepare() {
+  #cd ffmpeg
+  # FS#79281: fix assembling with binutil as >= 2.41
+  #git cherry-pick -n effadce6c756247ea8bae32dc13bb3e6f464f0eb
+  # FS#77813: fix playing ogg files with mplayer
+  #git cherry-pick -n cbcc817353a019da4332ad43deb7bbc4e695d02a
+  #patch -Np1 -i ../add-av_stream_get_first_dts-for-chromium.patch # https://crbug.com/1251779
+  # use non-deprecated nvenc GUID for conftest
+  #git cherry-pick -n 03823ac0c6a38bd6ba972539e3203a592579792f
+  #git cherry-pick -n d2b46c1ef768bc31ba9180f6d469d5b8be677500
+#}
+
+pkgver() {
+  cd ffmpeg
+  git describe --tags | sed 's/^n//'
+}
+
+#pkgver() {
+#    printf '%s.r%s.g%s' "$(git -C ffmpeg describe --tags --long | awk -F'-' '{ sub(/^n/, "", $1); print $1 }')" \
+#                        "$(git -C ffmpeg describe --tags --match 'N' | awk -F'-' '{ print $2 }')" \
+#                        "$(git -C ffmpeg rev-parse --short HEAD)"
+#}
+
+build() {
+  cd ffmpeg
+  ./configure \
+	--prefix=/usr \
+	--disable-debug \
+	--disable-static \
+	--disable-everything \
+	--disable-manpages \
+	--disable-podpages \
+	--disable-txtpages \
+	--disable-htmlpages \
+	--disable-filters \
+	--disable-programs \
+	--enable-shared \
+	--enable-libzimg \
+	--enable-zlib \
+	--disable-autodetect \
+	--disable-programs \
+	--disable-doc \
+	--disable-htmlpages \
+	--disable-manpages \
+	--disable-podpages \
+	--disable-txtpages \
+	--disable-network \
+	--disable-xlib \
+	--disable-cuda-llvm \
+	--enable-demuxer=ac3,ass,dts,dtshd,dvbsub,dvbtxt,h264,matroska,mpegts \
+	--enable-decoder=ass,aac,ac3,dca,dvbsub,dvdsub,h264,mp2,srt \
+	--enable-muxer=ac3,ass,dts,dtshd,h264,matroska,mp2,mpegts,srt \
+	--enable-parser=aac,ac3,dvbsub,dvdsub,h264,mpegaudio,png \
+	--enable-protocol=cache,file \
+	--enable-encoder=png
+  make
+}
+package() {
+  make DESTDIR="${pkgdir}" -C ffmpeg install
+}
