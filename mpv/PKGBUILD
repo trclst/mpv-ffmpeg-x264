@@ -18,7 +18,7 @@ depends=('alsa-lib' 'libasound.so' 'ffmpeg'
          'libxv' 'luajit' 'mesa' 'shaderc'
          'libshaderc_shared.so' 'uchardet' 'vulkan-icd-loader' 'zlib') 
 makedepends=('git' 'meson'
-             'vulkan-headers')
+             'vulkan-headers' 'xxhash')
 optdepends=('yt-dlp: for video-sharing websites playback'
             'youtube-dl: for video-sharing websites playback')
 provides=('libmpv.so')
