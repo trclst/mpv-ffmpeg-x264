@@ -70,9 +70,9 @@ build() {
 	--enable-network \
 	--disable-xlib \
 	--disable-cuda-llvm \
-	--enable-demuxer=ac3,ass,dts,dtshd,dvbsub,dvbtxt,h264,matroska,mpegts \
-	--enable-decoder=ass,aac,ac3,dca,dvbsub,dvdsub,h264,mp2,srt \
-	--enable-muxer=ac3,ass,dts,dtshd,h264,matroska,mp2,mpegts,srt \
+	--enable-demuxer=ac3,eac3,ass,dts,dtshd,dvbsub,dvbtxt,h264,matroska,mpegts \
+	--enable-decoder=ass,aac,ac3,eac3,dca,dvbsub,dvdsub,h264,mp2,srt \
+	--enable-muxer=ac3,eac3,ass,dts,dtshd,h264,matroska,mp2,mpegts,srt \
 	--enable-parser=aac,ac3,dvbsub,dvdsub,h264,mpegaudio,png \
 	--enable-protocol=cache,file \
 	--enable-encoder=png
